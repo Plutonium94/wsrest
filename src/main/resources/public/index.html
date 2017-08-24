@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="fr">
+<head>
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<meta charset="utf-8">
+	<title>Test REST</title>
+</head>
+<body>
+
+	<select id="urlSelect">
+		<option>/livre/index/</option>
+		<option>/livre/id</option>
+		<option>/bibliotheque/index/</option>
+		<option>/bibliotheque/id</option>
+	</select>
+
+
+
+	<textarea id="dataArea" rows="2" cols="30" placeholder="data"></textarea>
+
+	<select id="methodSelect">
+		<option value="GET">GET</option>
+		<option value="POST">POST</option>
+		<option value="PUT">PUT</option>
+		<option value="DELETE">DELETE</option>
+		<option value="OPTIONS">OPTIONS</option>
+	</select>
+
+	<button id="send">Envoyer</button>
+
+	<div id="resultDiv"></div>
+
+
+	<script>
+
+		document.getElementById('send').onclick = function(evt) {
+			var urlSelect = document.getElementById('urlSelect');
+			var url = urlSelect.options[urlSelect.selectedIndex].innerHTML;
+			var methodSelect = document.getElementById('methodSelect');
+			var method = methodSelect.options[methodSelect.selectedIndex].value;
+			console.log('method: ' + method);
+			var data = document.getElementById('dataArea').value;
+			var xhr = new XMLHttpRequest();
+			xhr.open(method,url,true);
+			xhr.send(data);
+			xhr.onreadystatechange = function() {
+				if(xhr.readyState = 4) {
+					document.getElementById('resultDiv').innerHTML = xhr.status +'<br>' + 
+						xhr.getAllResponseHeaders() +'<br>'+ xhr.responseText;
+				} else {
+					document.getElementById('resultDiv').innerHTML = '';
+				}
+			}
+		};
+
+	</script>
+
+</body>
+</html>

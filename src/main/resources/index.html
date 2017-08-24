@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fr">
+<head>
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<meta charset="utf-8">
+	<title>Test REST</title>
+</head>
+<body>
+
+	<select id="urlSelect">
+		<option>/livre/index/</option>
+		<option>/livre/id</option>
+	</select>
+
+	<textarea id="dataRow" rows="2" cols="30" placeholder="data"></textarea>
+
+	<select>
+		<option name="GET">GET</option>
+		<option name="POST">POST</option>
+		<option name="PUT">PUT</option>
+		<option name="DELETE">DELETE</option>
+		<option name="OPTIONS">OPTIONS</option>
+	</select>
+
+	<button id="send">Envoyer</button>
+
+
+	<script>
+
+		document.getElementById('send').onclick = function(evt) {
+			var urlSelect = document.getElementById('urlSelect');
+			var url = urlSelect.options[urlSelect.selectedIndex];
+			console.log(url);
+		};
+
+	</script>
+
+</body>
+</html>
