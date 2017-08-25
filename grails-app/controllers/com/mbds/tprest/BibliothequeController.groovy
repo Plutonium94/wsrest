@@ -4,11 +4,19 @@ import grails.converters.JSON
 
 class BibliothequeController {
 
-    def index() { 
+    def index() {
+        println(request.getMethod())
     	switch(request.getMethod()) {
     		case "GET":
-    			def bibliotheques = Bibliotheque.list()
-    			render bibliotheques as JSON
+                println(params)
+                def i = params.id as Long
+                if(i && i instanceof Long) {
+                    def bibliotheque = Bibliotheque.get(i)
+                    render bibliotheque as JSON
+                } else {
+        			def bibliotheques = Bibliotheque.list()
+        			render bibliotheques as JSON
+                }
     			break
     		case "POST":
     			def bibliotheque = new Bibliotheque(params)
@@ -17,21 +25,14 @@ class BibliothequeController {
     			} else {
     				response.status = 400
     			}
+                break
+            default:
+                response.status = 405
+
     	}
     }
 
-    def id(num) {
-        num = num as Long
-        switch(request.getMethod()) {
-            case "GET":
-                def bibliotheque = Bibliotheque.get(num)
-                render bibliotheque as JSON
-                break;
-
-            case "OPTIONS":
-                render ["GET","PUT","DELETE"] as JSON
-        }
-    }
-
+    
+    
 
 }

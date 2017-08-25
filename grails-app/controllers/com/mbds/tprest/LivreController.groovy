@@ -7,8 +7,16 @@ class LivreController {
     def index() { 
     	switch(request.getMethod()) {
     		case "GET":
-    			def livres = Livre.list()
-    			render livres as JSON
+                println(params)
+                def i = params.id as Long
+                if(i && i instanceof Long) {
+                    def livre = Livre.get(i)
+                    render livre as JSON
+                } else {
+                    def livres = Livre.list()
+                    render livres as JSON
+                }
+    			
     			break
             case "POST":
                 if(!params.bibliotheque || !params.bibliotheque.id || !Bibliotheque.get(params.bibliotheque.id)) {

@@ -9,6 +9,9 @@ class UrlMappings {
             }
         }
 
+        "/Bibliotheque/$id?"(controller:"Bibliotheque",action:"index")
+        "/Livre/$id?"(controller:"Livre",action:"index")
+
         "/"(redirect:"/index.html")
 
         /*"/"(view:"/index")

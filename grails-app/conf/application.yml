@@ -50,7 +50,7 @@ environments:
 grails:
     profile: web
     codegen:
-        defaultPackage: wsrest
+        defaultPackage: com.mbds.tprest
     spring:
         transactionManagement:
             proxies: false
@@ -63,6 +63,7 @@ spring:
     groovy:
         template:
             check-template-location: false
+
 # Spring Actuator Endpoints are Disabled by Default
 endpoints:
     enabled: false
