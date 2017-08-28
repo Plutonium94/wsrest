@@ -20,6 +20,7 @@ class LivreController {
     			break
             case "POST":
                 if(!params.bibliotheque || !params.bibliotheque.id || !Bibliotheque.get(params.bibliotheque.id)) {
+                    println(params)
                     render(status: 400,text:'Il faut une bibliotheque existante pour creer un livre ') as JSON
                     return
                 }
