@@ -15,7 +15,12 @@ class BibliothequeController {
                 def i = params.id as Long
                 if(i && i instanceof Long) {
                     def bibliotheque = Bibliotheque.get(i)
-                    render bibliotheque as JSON
+                    if(bibliotheque) {
+
+                        render bibliotheque as JSON
+                    } else {
+                        render(status: 404, "La bibliotheque id " + i + " n'existe pas")
+                    }
                 } else {
         			def bibliotheques = Bibliotheque.list()
         			render bibliotheques as JSON
@@ -56,6 +61,16 @@ class BibliothequeController {
                         render(status: 404, text: 'Il existe aucun bibliotheque avec id = ' + corps.id)
                         
                     } else {
+                        if(corps.nom) {
+                            bibliotheque.nom = corps.nom
+                        }
+                        if(corps.adresse) {
+                            bibliotheque.adresse = corps.adresse
+                        } 
+                        if(corps.anneeCreation) {
+                            bibliotheque.anneeCreation = corps.anneeCreation
+                        }
+
                         bibliotheque.save(failOnError: true, flush: true)
                         render(status: 200, text: bibliotheque as JSON)
                     }

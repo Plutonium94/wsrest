@@ -12,7 +12,11 @@ class LivreController {
                 def i = params.id as Long
                 if(i) {
                     def livre = Livre.get(i)
-                    render livre as JSON
+                    if(livre) {
+                        render livre as JSON
+                    } else {
+                        render(status: 404, text: "Le livre id = " + i + " n'existe pas")
+                    }
                 } else {
                     def livres = Livre.list()
                     render livres as JSON
@@ -22,7 +26,9 @@ class LivreController {
             case "POST":
                 def corps = request.JSON
                 println(corps)
-                if(!corps.bibliotheque || !corps.bibliotheque.id) {
+                if(!(corps.nom && corps.auteur && corps.isbn && corps.dateSortie)) {
+                    render(status:400, text: "Il faut specifier nom, auteur, isbn, dateSortie et l'id d'une bibliotheque existante pour creer un livre")
+                } else if(!corps.bibliotheque || !corps.bibliotheque.id) {
                     render(status: 400,text:'Il faut une bibliotheque existante pour creer un livre ') as JSON
                     
                 } else {
@@ -52,7 +58,7 @@ class LivreController {
                 println corps
                 if(!corps.id) {
                     render(status: 400, text: 'Il faut specifier id du livre a modifier')
-                } else if(!corps.nom && !corps.dateSortie && !corps.isbn && !(corps.bibliotheque && corps.bibliotheque.id)) {
+                } else if(!corps.nom &&  !corps.auteur && !corps.dateSortie && !corps.isbn && !(corps.bibliotheque && corps.bibliotheque.id)) {
                     render(status: 400, text: 'Vous pouvez modifier soit le nom, soit dateSortie, soit isbn soit id de bibliotheque d\'un livre')
                 } else  {
 
@@ -61,8 +67,34 @@ class LivreController {
                         render(status: 404, text: 'Il existe aucun livre avec id = ' + corps.id)
                         
                     } else {
-                        livre.save(failOnError: true, flush: true)
-                        render(status: 200, text: livre as JSON)
+                        if(corps.nom) {
+                            livre.nom = corps.nom
+                        }
+                        if(corps.auteur) {
+                            livre.auteur = corps.auteur
+                        }
+                        if(corps.dateSortie) {
+                            corps.dateSortie = Date.parse("yyyy-MM-dd",corps.dateSortie)
+                            livre.dateSortie = corps.dateSortie
+                        }
+                        if(corps.isbn) {
+                            livre.isbn = corps.isbn
+                        }
+                        if(corps.bibliotheque && corps.bibliotheque.id) {
+                            def bibliotheque = Bibliotheque.get(corps.bibliotheque.id as Long)
+                            if(bibliotheque) {
+                                livre.bibliotheque = bibliotheque
+                            } else {
+                                render(status: 404, text:"Il n'exsite aucune bibliotheque avec id= " + corps.bibliotheque.id)
+                                return
+                            }
+                        } 
+                        if(livre.save(failOnError: true, flush: true)) {
+
+                            render(status: 200, text: livre as JSON)
+                        } else {
+                            response.status = 400
+                        }
                     }
                 }
                 break
