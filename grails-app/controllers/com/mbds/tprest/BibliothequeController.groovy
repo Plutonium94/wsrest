@@ -8,6 +8,7 @@ class BibliothequeController {
     def numberService
 
     def index() {
+        if(request.getMethod() != 'GET' && request.getMethod() != 'POST' && request.forwardURI.contains('ibliotheques')) return render(status:405,'Only GET is allowed on /bibliotheques.')
         println(request.getMethod())
     	switch(request.getMethod()) {
     		case "GET":

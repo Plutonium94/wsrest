@@ -6,6 +6,7 @@ class LivreController {
 
 
     def index() { 
+        if(request.getMethod() != 'GET' && request.getMethod() != 'POST' && request.forwardURI.contains('ivres')) return render(status:405,'Only GET is allowed on /livres;')
     	switch(request.getMethod()) {
     		case "GET":
                 println(params.id)
