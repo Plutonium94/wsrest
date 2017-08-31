@@ -18,13 +18,19 @@ class BibliothequeController {
                     def bibliotheque = Bibliotheque.get(i)
                     if(bibliotheque) {
 
-                        render bibliotheque as JSON
+                        withFormat {
+                            json { render bibliotheque as JSON }
+                            xml { render bibliotheque as XML }
+                        } 
                     } else {
                         render(status: 404, "La bibliotheque id " + i + " n'existe pas")
                     }
                 } else {
         			def bibliotheques = Bibliotheque.list()
-        			render bibliotheques as JSON
+        			withFormat {
+                        json { render bibliotheques as JSON }
+                        xml { render bibliotheques as XML }
+                    } 
                 }
     			break
     		case "POST":
@@ -38,7 +44,10 @@ class BibliothequeController {
                     if(!bibnew) {
                         response.status = 400
                     } else {
-    				    render(status: 201, text: bibnew as JSON)
+                        withFormat {
+                            json { render(status: 201, text: bibnew as JSON) }
+                            xml { render(status: 201, text: bibnew as XML) }
+                        } 
                     }
     			}
                 break
@@ -73,7 +82,10 @@ class BibliothequeController {
                         }
 
                         bibliotheque.save(failOnError: true, flush: true)
-                        render(status: 200, text: bibliotheque as JSON)
+                        withFormat {
+                            json { render bibliotheque as JSON }
+                            xml { render bibliotheque as XML }
+                        }
                     }
                 }
                 break

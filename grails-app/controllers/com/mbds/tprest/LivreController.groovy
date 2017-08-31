@@ -1,6 +1,6 @@
 package com.mbds.tprest
 
-import grails.converters.JSON
+import grails.converters.*
 
 class LivreController {
 
@@ -14,7 +14,10 @@ class LivreController {
                 if(i) {
                     def livre = Livre.get(i)
                     if(livre) {
-                        render livre as JSON
+                        withFormat {
+                            json { render livre as JSON }
+                            xml { render livre as XML }
+                        } 
                     } else {
                         render(status: 404, text: "Le livre id = " + i + " n'existe pas")
                     }
@@ -43,7 +46,10 @@ class LivreController {
                             def livre = new Livre(corps)
                             def livnew = livre.save(flush: true, failOnError: true)
                             if(livre) {
-                                render(status: 201, text: livnew as JSON)
+                                withFormat {
+                                    json { render(status: 201,text: livnew as JSON) }
+                                    xml { render(status: 201, text: livnew as XML )}
+                                } 
                             } else {
                                 response.status = 400
                             }
@@ -91,8 +97,10 @@ class LivreController {
                             }
                         } 
                         if(livre.save(failOnError: true, flush: true)) {
-
-                            render(status: 200, text: livre as JSON)
+                            withFormat {
+                                json { render livre as JSON }
+                                xml { render livre as XML }
+                            } 
                         } else {
                             response.status = 400
                         }
