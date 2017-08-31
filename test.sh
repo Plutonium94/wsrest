@@ -1,6 +1,7 @@
 
 curl -v -X GET http://localhost:8080/bibliotheque;
 
+
 curl -v -X GET http://localhost:8080/bibliotheques;
 
 
@@ -9,12 +10,14 @@ curl -v -X POST -H "Content-Type: application/json" -d @test/bib_post.json http:
 curl -v -X POST -H "Content-Type: application/json" -d @test/bib_post.json http://localhost:8080/bibliotheques/;
 
 
+
 curl -v -X POST -H "Content-Type: application/json" -d @test/bib_post_n.json http://localhost:8080/bibliotheque/;
 
 
 curl -v -X PUT -H "Content-Type: application/json" -d @test/bib_put.json http://localhost:8080/bibliotheque/;
 
 curl -v -X PUT -H "Content-Type: application/json" -d @test/bib_put.json http://localhost:8080/bibliotheques/;
+
 
 curl -v -X PUT -H "Content-Type: application/json" -d @test/bib_put_n.json http://localhost:8080/bibliotheque/;
 
